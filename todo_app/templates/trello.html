@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}To-Do App{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-10 mx-auto">
+    <h1 class="display-4">Trello Boards</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+    <form method="post">
+      {% for board in boards %}
+      <input type="radio" class="form-check-input" name="selected" value="{{ board.id }}">{{ board.name }}</input><br>
+      {% endfor %}
+      <input type="submit" formaction="/list" value="Select Board" class="btn btn-primary btn-block">
+      <input type="submit" formaction="/addcard" value="Add Card" class="btn btn-primary btn-block">
+    </form>
+  </div>
+</div>
+{% endblock %}
