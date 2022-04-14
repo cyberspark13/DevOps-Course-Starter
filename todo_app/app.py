@@ -94,7 +94,7 @@ def addcard():
 def addcardapi():
     card = Card(request.form.get('selected'), request.form.get('card_name'), request.form.get('card_desc'))
     make_request_post(card.add_card())
-    return redirect('/trello')
+    return redirect('/')
 
 @app.route('/editcard', methods=['POST'])
 def editcard():
@@ -112,4 +112,4 @@ def editcardapi():
     list_id = request.form.get('selected')
     card_id = session.get('card_id')
     make_request_put(edit_card_list(list_id, card_id))
-    return redirect('/trello')
+    return redirect('/')
