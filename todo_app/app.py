@@ -18,7 +18,7 @@ app.config.from_object(Config())
 
 def get_boards():
     #Get all the names and ids of boards associated with api key
-    return ("https://api.trello.com/1/members/me/boards?" + key + "&" + token + "&fields=name")
+    return f"https://api.trello.com/1/members/me/boards?{key}&{token}&fields=name"
 
 def get_cards(board_id):
     #Get all the cards associated with a board
