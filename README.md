@@ -71,3 +71,11 @@ Tests can be run as a whole by running `poetry run pytest`. To skip the slow end
 To run the tests individually in vscode run `>Python: Discover Tests` from the command window (`Ctrl/Cmd + Shift + P`), select `pytest` as the test runner and then `.` as the test folder.
 * To get the end to end tests running you'll need to [download the applicable chromedriver](https://chromedriver.chromium.org/downloads) for your version of Chrome + OS and add it the project root folder or your PATH.
 * We'd recommend installing the [Python Test Explorer](https://marketplace.visualstudio.com/items?itemName=LittleFoxTeam.vscode-python-test-adapter) extension for VSCode as it doesn't have issues like all the tests vanishing when one file has a syntax error (plus it's easier to view individual test log output).
+
+## Ansible
+Log in to your controller node and copy across the ansible-playbook.yml and ansible-inventory file.
+
+Run the playbook with:
+ansible-playbook my-playbook.yml -i my-inventory
+
+You will be prompted for the trello api key, secret, and board ID, which you can paste in.
