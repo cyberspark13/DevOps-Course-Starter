@@ -41,11 +41,13 @@
       dest: /opt/todoapp
       version: module_4
       force: yes
+    become: yes
 
   - name: Install Poetry Project Dependencies
     ansible.builtin.shell:
       cmd: source /home/ec2-user/.bash_profile && poetry install
       chdir: /opt/todoapp/
+    become: yes
 
   - name: Clone .env from jinja2 templete
     ansible.builtin.template:
