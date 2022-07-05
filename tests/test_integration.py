@@ -73,14 +73,6 @@ sample_trello_lists_response = [
     }
 ]
 
-
-sample_trello_card = {
-    "id": TODO_ITEM_ID,
-    "dateLastActivity": "2022-06-10T15:48:26.091Z",
-    "name": "My Next Task"
-}
-
-
 def mock_get_lists(url, params):
     if url == 'https://api.trello.com/1/boards/abcd1234/lists':
         response = Mock(ok=True)
