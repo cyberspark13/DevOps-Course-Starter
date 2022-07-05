@@ -1,0 +1,62 @@
+- name: Cyberspark13 Ansible
+  hosts: all
+  remote_user: ec2-user
+  become: yes
+  vars_prompt:
+    - name: ansible_trello_api_key
+      prompt: What is your Trello API Key?
+      private: yes
+    - name: ansible_trello_api_secret_key
+      prompt: What is your Trello API Secret?
+      private: yes
+    - name: ansible_trello_board_key
+      prompt: What is your Trello Board ID?
+      private: yes
+
+  tasks:
+  - name: Install latest Git and Python3
+    yum:
+      name:
+        - git
+        - python3
+      state: latest
+
+
+  - name: Install the latest version of poetry via curl and python
+    ansible.builtin.shell:
+      cmd: curl -sSL https://install.python-poetry.org | python3 -
+    args:
+      creates: ~/.local/bin/poetry
+
+  - name: Create App directory
+    ansible.builtin.file:
+      path: /opt/todoapp
+      state: directory
+      owner: ec2-user
+
+  - name: App git checkout
+    ansible.builtin.git:
+      repo: https://github.com/cyberspark13/DevOps-Course-Starter/tree/module_4
+      dest: /opt/todoapp
+      force: yes
+
+  - name: Install Poetry Project Dependencies
+    ansible.builtin.shell:
+      cmd: source /home/ec2-user/.bash_profile && poetry install
+      chdir: /opt/todoapp/
+
+  - name: Clone .env from jinja2 templete
+    ansible.builtin.template:
+      src: ~/templates/.env.j2
+      dest: /opt/todoapp/.env
+
+  - name: Copy todoapp.service to systemd
+    ansible.builtin.copy:
+      src: ~/todoapp.service
+      dest: /etc/systemd/system/todoapp.service
+
+  - name: Start To-do app via systemd
+    ansible.builtin.systemd:
+      name: todoapp.service
+      state: restarted
+      daemon_reload: yes
