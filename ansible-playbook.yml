@@ -1,7 +1,6 @@
 - name: Cyberspark13 Ansible
-  hosts: all
+  hosts: nodes
   remote_user: ec2-user
-  become: yes
   vars_prompt:
     - name: ansible_trello_api_key
       prompt: What is your Trello API Key?
@@ -20,6 +19,7 @@
         - git
         - python3
       state: latest
+    become: yes
 
 
   - name: Install the latest version of poetry via curl and python
@@ -33,6 +33,7 @@
       path: /opt/todoapp
       state: directory
       owner: ec2-user
+    become: yes
 
   - name: App git checkout
     ansible.builtin.git:
@@ -59,5 +60,6 @@
   - name: Start To-do app via systemd
     ansible.builtin.systemd:
       name: todoapp.service
-      state: restarted
+      state: started
       daemon_reload: yes
+    become: yes
