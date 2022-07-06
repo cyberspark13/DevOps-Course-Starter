@@ -48,6 +48,12 @@ def app_with_temp_board():
     thread.join(1)
     delete_trello_board(board_id)
 
+##I don't know where these should go.
+# options = webdriver.ChromeOptions()
+# options.add_argument('--headless')
+# # options.add_argument('window-size=1200x600')
+# options.add_argument('--no-sandbox')
+# options.add_argument('--disable-dev-shm-usage')
 
 @pytest.fixture(scope='module')
 def driver():

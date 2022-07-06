@@ -1,37 +1,35 @@
-# Dockerfile
-## Build venv
-FROM python:3.10.5-buster
+FROM python:3.8.6-buster as base
+RUN apt-get update
 
-RUN mkdir /app 
-COPY /app /app
-COPY pyproject.toml /app 
-WORKDIR /app
-ENV PYTHONPATH=${PYTHONPATH}:${PWD} 
-RUN pip3 install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-dev
+WORKDIR /opt
+COPY . /opt
+RUN pip install poetry && poetry install
 
+FROM base as production
+RUN apt-get install -y gunicorn
+EXPOSE 80
+RUN chmod +x "/opt/gunicorn.sh"
+ENTRYPOINT ["/opt/gunicorn.sh"]
 
+FROM base as development
+EXPOSE 5000
+ENTRYPOINT ["sh", "/opt/flask.sh" ]
 
+FROM base as test
+# ##Install Chrome
+# RUN sh -c "echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >>   /etc/apt/sources.list"
+# RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+# RUN apt-get -y update
+# RUN apt-get install -y google-chrome-stable
+# ##Install ChromeDriver
+# RUN apt-get install -yqq unzip curl
+# RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
+# RUN unzip /tmp/chromedriver.zip chromedriver -d /opt/todo_app
 
+# ##Install Selenium
+# RUN apt-get install -y python3 python3-pip
+# RUN pip3 install selenium
 
-
-
-# Install poetry, see https://python-poetry.org/docs/#installation
-ENV POETRY_VERSION=1.1.1
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-ENV PATH /root/.poetry/bin:$PATH
-
-# Install dependencies
-WORKDIR /app
-RUN python -m venv /app/venv
-COPY pyproject.toml poetry.lock ./
-RUN . /app/venv/bin/activate && poetry install
-ENV PATH /app/venv/bin:$PATH
-
-# Add code
-COPY . ./
-
-#HEALTHCHECK --start-period=30s CMD python -c "import requests; requests.get('http://localhost:8000', timeout=2)"
-
-CMD ["gunicorn", "blog.wsgi", "-b 0.0.0.0:8000", "--log-file", "-"]
+ENV PATH="${PATH}:/opt/todo_app"
+EXPOSE 5000
+CMD ["poetry", "run", "pytest", "tests"]

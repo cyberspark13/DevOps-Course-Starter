@@ -1,0 +1,4 @@
+.env.j2
+.env.template
+.env
+.git
