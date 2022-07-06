@@ -79,3 +79,10 @@ Run the playbook with:
 ansible-playbook my-playbook.yml -i my-inventory
 
 You will be prompted for the trello api key, secret, and board ID, which you can paste in.
+
+## Docker
+You can run 'docker-compose up' to create the Dev, Prod, and Test images.
+The test results will output to the terminal.
+
+For Prod - http://localhost
+For Dev - http://localhost:5000
