@@ -1,0 +1,15 @@
+.env.j2
+.env.template
+.github
+.gitignore
+.vscode
+.env
+.venv
+.git
+ansible-inventory
+ansible-playbook.yml
+poetry.lock
+todoapp.service
+README.md 
+Dockerfile
+chromedriver.exe

@@ -1,37 +1,21 @@
-# Dockerfile
-## Build venv
-FROM python:3.10.5-buster
+FROM python:3.8.6-buster as base
+RUN apt-get update
 
-RUN mkdir /app 
-COPY /app /app
-COPY pyproject.toml /app 
-WORKDIR /app
-ENV PYTHONPATH=${PYTHONPATH}:${PWD} 
-RUN pip3 install poetry
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-dev
+WORKDIR /opt
+COPY . /opt
+RUN pip install poetry && poetry config virtualenvs.create false --local && poetry install
 
+FROM base as production
+RUN apt-get install -y gunicorn
+EXPOSE 80
+RUN chmod +x "/opt/gunicorn.sh"
+ENTRYPOINT ["/opt/gunicorn.sh"]
 
+FROM base as development
+RUN pip3 install markupsafe==2.0.1
+EXPOSE 5000
+ENTRYPOINT ["sh", "/opt/flask.sh" ]
 
-
-
-
-
-# Install poetry, see https://python-poetry.org/docs/#installation
-ENV POETRY_VERSION=1.1.1
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-ENV PATH /root/.poetry/bin:$PATH
-
-# Install dependencies
-WORKDIR /app
-RUN python -m venv /app/venv
-COPY pyproject.toml poetry.lock ./
-RUN . /app/venv/bin/activate && poetry install
-ENV PATH /app/venv/bin:$PATH
-
-# Add code
-COPY . ./
-
-#HEALTHCHECK --start-period=30s CMD python -c "import requests; requests.get('http://localhost:8000', timeout=2)"
-
-CMD ["gunicorn", "blog.wsgi", "-b 0.0.0.0:8000", "--log-file", "-"]
+FROM base as test
+ENV PATH="${PATH}:/root/todo_app"
+CMD ["poetry", "run", "pytest"]
