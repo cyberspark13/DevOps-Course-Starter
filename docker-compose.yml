@@ -19,3 +19,13 @@ services:
       - "5000:5000"
     env_file:
       - .env
+  app-test:
+    container_name: test
+    build:
+      dockerfile: dockerfile
+      context: .
+      target: test
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
