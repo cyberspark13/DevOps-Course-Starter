@@ -1,0 +1,26 @@
+services:
+  app-prod: 
+    container_name: production
+    build:
+      context: .
+      target: production
+    ports: 
+      - 80:80
+    env_file:
+      - .env
+  app-dev:
+    container_name: development
+    build:
+      context: .
+      target: development
+    ports: 
+      - "5000:5000"
+    env_file:
+      - .env
+  app-test:
+    container_name: test
+    build:
+      context: .
+      target: test
+    env_file:
+      - .env

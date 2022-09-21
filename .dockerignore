@@ -1,0 +1,7 @@
+.env.j2
+.env.template
+.env
+.git
+README.md
+Dockerfile
+.vscode
