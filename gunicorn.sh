@@ -1,2 +1,2 @@
 #!/bin/bash
-gunicorn todo_app.app:app --preload -b 0.0.0.0:80
+poetry run gunicorn -b 0.0.0.0:80 -w 2 "todo_app.app:create_app()"

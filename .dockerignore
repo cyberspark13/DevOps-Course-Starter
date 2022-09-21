@@ -2,3 +2,6 @@
 .env.template
 .env
 .git
+README.md
+Dockerfile
+.vscode

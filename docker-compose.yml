@@ -2,7 +2,6 @@ services:
   app-prod: 
     container_name: production
     build:
-      dockerfile: dockerfile
       context: .
       target: production
     ports: 
@@ -12,7 +11,6 @@ services:
   app-dev:
     container_name: development
     build:
-      dockerfile: dockerfile
       context: .
       target: development
     ports: 
@@ -22,10 +20,7 @@ services:
   app-test:
     container_name: test
     build:
-      dockerfile: dockerfile
       context: .
       target: test
-    ports:
-      - "5001:5001"
     env_file:
       - .env
