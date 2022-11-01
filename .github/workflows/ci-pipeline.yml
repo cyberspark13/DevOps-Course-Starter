@@ -1,0 +1,17 @@
+name: CI Github Actions
+on:
+  push
+  pull_request:
+    branches:
+    - module_8
+jobs:
+ build:
+  name: Build and test
+  runs-on: ubuntu-latest
+  steps:
+  - uses: actions/checkout@v2
+  - run: echo FixTests
+ production:
+  name: Publish Image
+  steps:
+  - run: echo publishing
