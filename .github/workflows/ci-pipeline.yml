@@ -1,6 +1,8 @@
 name: CI Github Actions
 on:
-  push
+  push:
+    branches:
+    -module_8
   pull_request:
     branches:
     - module_8
