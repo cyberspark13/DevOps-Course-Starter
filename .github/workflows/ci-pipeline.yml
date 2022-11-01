@@ -15,5 +15,6 @@ jobs:
   - run: echo FixTests
  production:
   name: Publish Image
+  runs-on: ubuntu-latest
   steps:
   - run: echo publishing
