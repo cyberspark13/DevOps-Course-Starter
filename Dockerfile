@@ -30,4 +30,4 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /opt/todo_app
 
 ENV PATH="${PATH}:/opt/todo_app"
 EXPOSE 5000
-CMD ["poetry", "run", "pytest"]
+CMD ["poetry", "run", "pytest", "tests"]

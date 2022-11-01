@@ -7,5 +7,5 @@ jobs:
   steps:
   - uses: actions/checkout@v2
   - run: docker build --target test --tag todo-app:tests . 
-  - run: docker run todo-app:tests
+  - run: docker run todo-app:tests tests
   #- run: docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_SECRET=${{ secrets.TRELLO_API_SECRET }} -e TRELLO_BOARD_ID=${{ secrets.TRELLO_BOARD_ID }}  todo-app:tests_e2e
