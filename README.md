@@ -89,6 +89,7 @@ To run the commands manually you can use:
 
 docker build --target test --tag todo-app:test . 
 
+docker run todo-app:test tests
 docker run --env-file .env  todo-app:test tests_e2e
 
 ## Secrets
