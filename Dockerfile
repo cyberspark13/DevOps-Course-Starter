@@ -5,12 +5,12 @@ WORKDIR /opt
 COPY . /opt
 RUN pip install poetry
 COPY pyproject.toml poetry.lock /opt/
-RUN poetry install
+RUN poetry config virtualenvs.create false --local && poetry install
 COPY ./todo_app /opt/todo_app/
 
 FROM base as production
 EXPOSE 80
-CMD poetry run gunicorn "todo_app.app:create_app()" -b 0.0.0.0:80
+CMD poetry run gunicorn "todo_app.app:create_app()" -b 0.0.0.0:$PORT
 #ENTRYPOINT ["sh", "/opt/gunicorn.sh"]
 
 FROM base as development
