@@ -10,8 +10,7 @@ COPY ./todo_app /opt/todo_app/
 
 FROM base as production
 EXPOSE 80
-ENV PORT=5000
-CMD poetry run gunicorn "todo_app.app:create_app()" -b 0.0.0.0:$PORT
+CMD poetry run gunicorn "todo_app.app:create_app()" -b 0.0.0.0:${PORT:-5000}
 #ENTRYPOINT ["sh", "/opt/gunicorn.sh"]
 
 FROM base as development
