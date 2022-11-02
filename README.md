@@ -86,3 +86,8 @@ The test results will output to the terminal.
 
 For Prod - http://localhost
 For Dev - http://localhost:5000
+
+To run the commands manually you can use:
+docker build --target test --tag todo-app:test . 
+docker run todo-app:test tests
+docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_SECRET=${{ secrets.TRELLO_API_SECRET }} -e TRELLO_BOARD_ID=${{ secrets.TRELLO_BOARD_ID }}  todo-app:test tests_e2e
