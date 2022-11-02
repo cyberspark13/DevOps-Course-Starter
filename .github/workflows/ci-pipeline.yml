@@ -20,5 +20,6 @@ jobs:
     uses: act10ns/slack@v1
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-    status: ${{ job.status }}
-    message: "GitHub Actions Result: ${{ job.status }}\n${{ github.event.pull_request.thml_url }}"
+    with:
+      status: ${{ job.status }}
+      message: "GitHub Actions Result: ${{ job.status }}\n${{ github.event.pull_request.thml_url }}"
