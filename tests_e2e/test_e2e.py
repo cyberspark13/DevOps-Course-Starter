@@ -51,7 +51,11 @@ def app_with_temp_board():
 
 @pytest.fixture(scope='module')
 def driver():
-    with webdriver.Chrome() as driver:
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless')
+    opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
+    with webdriver.Chrome(options=opts) as driver:
         yield driver
 
 
@@ -100,3 +104,4 @@ def find_task_in_section(section_name, driver):
     section = driver.find_element_by_xpath(f"//*[@data-test-id='{section_name}']")
     tasks = section.find_elements_by_xpath("//*[@data-test-class='task']")
     return next(task for task in tasks if task.find_element_by_xpath("//*[contains(text(), 'Test Task')]") is not None)
+    
