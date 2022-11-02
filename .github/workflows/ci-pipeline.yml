@@ -51,18 +51,12 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:latest
 
-    - name: Rename Container
-      run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
-    
-    - name: Push Container
-      run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
-
-    - name: Login to Heroku Container registry
+    - name: Login to Heroku Container
       env: 
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:login 
     
-    - name: Release
+    - name: Release TO heroku
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:release web -a ${{ secrets.HEROKU_APP_NAME }}
