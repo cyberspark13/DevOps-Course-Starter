@@ -6,17 +6,43 @@ on:
   pull_request:
     branches:
     - module_8
+
 jobs:
+ 
  build:
   name: Build and test
   runs-on: ubuntu-latest
   steps:
   - uses: actions/checkout@v2
-  - run: echo FixTests
+  - run: docker build --target test --tag todo-app:test . 
+  - run: docker run todo-app:test tests
+  - run: docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_SECRET=${{ secrets.TRELLO_API_SECRET }} -e TRELLO_BOARD_ID=${{ secrets.TRELLO_BOARD_ID }}  todo-app:test tests_e2e
+  - name: Send status to Slack workflow
+    id: slack
+    uses: act10ns/slack@v1
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    with:
+      status: ${{ job.status }}
+      message: "GitHub Actions Result: ${{ job.status }}\n${{ github.event.pull_request.thml_url }}"
+ 
  production:
   needs: build
-  name: Publish Image
+  name: Login to DockerHub
   runs-on: ubuntu-latest
   if: github.ref == 'refs/heads/module_8' && github.event_name == 'push'
   steps:
-  - run: echo publishing
+    - uses: actions/checkout@v1
+    - name: Setting up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Login to DockerHub
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    - name: Push Image to DockerHub
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ./Dockerfile
+        target: production
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:latest

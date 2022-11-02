@@ -10,6 +10,7 @@ COPY ./todo_app /opt/todo_app/
 
 FROM base as production
 EXPOSE 80
+ENV PORT=5000
 CMD poetry run gunicorn "todo_app.app:create_app()" -b 0.0.0.0:$PORT
 #ENTRYPOINT ["sh", "/opt/gunicorn.sh"]
 
@@ -30,4 +31,4 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /opt/todo_app
 
 ENV PATH="${PATH}:/opt/todo_app"
 EXPOSE 5000
-CMD ["poetry", "run", "pytest"]
+ENTRYPOINT ["poetry", "run", "pytest"]
