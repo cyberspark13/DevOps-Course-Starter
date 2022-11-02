@@ -8,6 +8,10 @@ services:
       - 80:80
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./todo_app
+        target: /opt/todo_app
   app-dev:
     container_name: development
     build:
@@ -17,6 +21,10 @@ services:
       - "5000:5000"
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./todo_app
+        target: /opt/todo_app
   app-test:
     container_name: test
     build:
@@ -24,3 +32,7 @@ services:
       target: test
     env_file:
       - .env
+    volumes:
+      - type: bind
+        source: ./todo_app
+        target: /opt/todo_app
