@@ -81,8 +81,42 @@ ansible-playbook my-playbook.yml -i my-inventory
 You will be prompted for the trello api key, secret, and board ID, which you can paste in.
 
 ## Docker
-You can run 'docker-compose up' to create the Dev, Prod, and Test images.
-The test results will output to the terminal.
+You can run 'docker-compose up' to create the Dev, Prod, and Test images. The test results will output to the terminal.
 
-For Prod - http://localhost
-For Dev - http://localhost:5000
+For Prod - http://localhost For Dev - http://localhost:5000
+
+To run the commands manually you can use: docker build --target test --tag todo-app:test . docker run todo-app:test tests docker run -e TRELLO_API_KEY=${{ secrets.TRELLO_API_KEY }} -e TRELLO_API_SECRET=${{ secrets.TRELLO_API_SECRET }} -e TRELLO_BOARD_ID=${{ secrets.TRELLO_BOARD_ID }} todo-app:test tests_e2e
+
+## Secrets
+You must define the following secrets in GitHub Secrets section:
+
+For the board to work:
+TRELLO_API_KEY
+TRELLO_API_SECRET
+TRELLO_BOARD_ID
+
+For slack notifications: 
+SLACK_WEBHOOK_URL
+From thew Incoming WebHooks app in the slack app directory.
+
+For DockerHub
+DOCKERHUB_PASSWORD
+DOCKERHUB_USERNAME
+
+## Heroku:
+My app name is
+https://markdossantos-module8.herokuapp.com/
+
+To deploy to Heroku from DockerHub you will need to retag the Image:
+docker tag <username/project:tag> registry.heroku.com/<Heroku_App_Name>/web
+
+Push the image to DockerHub
+docker push registry.heroku.com/<Heroku_App_Name>/web
+
+Release the application
+heroku container:release web -a <Heroku_App_Name>
+
+For automation in your CI pipeline you will need to create an API key with:
+heroku authorizations:create
+And save the key in Github Secrets as:
+HEROKU_API_KEY

@@ -50,13 +50,3 @@ jobs:
         target: production
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:latest
-
-    - name: Login to Heroku Container
-      env: 
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:login 
-    
-    - name: Release TO heroku
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:release web -a ${{ secrets.HEROKU_APP_NAME }}
