@@ -50,14 +50,11 @@ jobs:
         target: production
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:latest
-    
-    Heroku:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Rename Container and Push
+
+    - name: Rename Container
       run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+    
+    - name: Push Container
       run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
     - name: Login to Heroku Container registry
